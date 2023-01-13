@@ -1,0 +1,18 @@
+
+# ROM and VGA BIOS images ---------------------------------------------
+romimage: options=fastboot address=0xf0000 
+vgaromimage: file=$BXSHARE/VGABIOS-lgpl-latest
+
+ 
+# boot from floppy using our disk image -------------------------------
+
+floppya: 1_44=bootloader.bin, status=inserted
+boot: a
+floppy_bootsig_check: disabled=1
+
+
+# logging and reporting -----------------------------------------------
+ 
+log:         devs.log             # All errors and info logs will output to OSDev.log
+error:       action=report 
+info:        action=report

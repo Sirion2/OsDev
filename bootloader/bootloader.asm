@@ -31,10 +31,34 @@ VolumeSerialNumber:     dd  0x1C
 VolumeLabel:            db  "Disco C:/  ",0
 FileSystem:             db  "FAT12   "
 
+msg0: db    "Inside OS", 0
+msg1: db    "Error Reseting disk"
+
+_msgPrint:
+			lodsb					
+			or			al, al		
+			jz			done	
+			mov			ah,	0eh	
+			int			10h
+			jmp			_msgPrint		
+    done:
+			ret	       
 
 ; Boot Loader Entry Point
 EntryPoint:
+    
+    xor     ax, ax
+    mov     ds, ax
+    mov     es, ax
+
+    mov     si, msg0
+    call    _msgPrint   
+
+    xor     ax, ax
+    int     0x12    
+
     cli                    
-    hlt                   
-    times 510 - ($-$$) db 0     ; first padding 510 bytes with 0
-    dw 0xAA5                    
+    hlt 
+     
+times 510 - ($-$$) db 0     ; first padding 510 bytes with 0
+dw 0xAA55  

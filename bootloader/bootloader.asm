@@ -1,10 +1,19 @@
 ; Bootloader.asm
 
+
 ;Running at 16 bits Real Mode
 use16
 bits 16 
 
 org     0x7c00
+
+; mov     bp, 0x8000
+; mov     sp, bp
+mov     si, msg0
+call    PrintString
+jmp $
+
+%include './routines/print.inc'
 
 start:  jmp EntryPoint
 
@@ -31,18 +40,9 @@ VolumeSerialNumber:     dd  0x1C
 VolumeLabel:            db  "Disco C:/  ",0
 FileSystem:             db  "FAT12   "
 
-msg0: db    "Inside OS", 0
-msg1: db    "Error Reseting disk"
+msg0:                   db    "Inside the OS", 0
+msg1:                   db    "Error Reseting disk"
 
-_msgPrint:
-			lodsb					
-			or			al, al		
-			jz			done	
-			mov			ah,	0eh	
-			int			10h
-			jmp			_msgPrint		
-    done:
-			ret	       
 
 ; Boot Loader Entry Point
 EntryPoint:
@@ -51,14 +51,13 @@ EntryPoint:
     mov     ds, ax
     mov     es, ax
 
-    mov     si, msg0
-    call    _msgPrint   
-
     xor     ax, ax
     int     0x12    
 
     cli                    
     hlt 
      
+
+
 times 510 - ($-$$) db 0     ; first padding 510 bytes with 0
 dw 0xAA55  

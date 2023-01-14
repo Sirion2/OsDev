@@ -1,6 +1,6 @@
 
 # ROM and VGA BIOS images ---------------------------------------------
-romimage: options=fastboot address=0xf0000 
+romimage: file=BIOS-bochs-latest, address=0xf0000
 vgaromimage: file=$BXSHARE/VGABIOS-lgpl-latest
 
  
